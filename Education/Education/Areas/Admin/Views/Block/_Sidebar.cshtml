@@ -1,0 +1,112 @@
+﻿@using Education.Models;
+@{
+	UserRole fb = new UserRole();
+
+}
+<div class="navbar-default sidebar" role="navigation">
+	<div class="sidebar-nav navbar-collapse">
+		<ul class="nav" id="side-menu">
+			<li class="sidebar-search">
+				<div class="input-group custom-search-form">
+					<input type="text" class="form-control" placeholder="Tìm kiếm...">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">
+							<i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+				<!-- /input-group -->
+			</li>
+			@{ if (Session["RoleName"].ToString() == "AD" || Session["RoleName"].ToString() == "MA")
+				{
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Chức năng chung<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<a href="/Admin/TaiKhoan/">Quản lý người dùng</a>
+							</li>
+							<li>
+								<a href="/Admin/UserRole/">Cấu hình nhóm quyền</a>
+							</li>
+							<li>
+								<a href="#">Phân quyền</a>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+
+
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Giáo viên <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<a href="/Admin/Teacher/">Quản lý giáo viên</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Nhân viên<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<a href="#">Quản lý nhân viên</a>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+				}
+				if (Session["RoleName"].ToString() == "TE"|| Session["RoleName"].ToString() == "AD" || Session["RoleName"].ToString() == "MA")
+				{
+
+
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Học viên <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<a href="/Admin/Student/">Quản lý học viên</a>
+							</li>
+							<li>
+								<a href="#">Quản lý điểm</a>
+							</li>
+						</ul>
+					</li>
+				}
+				if (Session["RoleName"].ToString() == "EM"|| Session["RoleName"].ToString() == "AD" || Session["RoleName"].ToString() == "MA")
+				{
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Trung tâm<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<a href="/Admin/Class/">Quản lý lớp học</a>
+							</li>
+							<li>
+								<a href="#">Quản lý khóa học</a>
+							</li>
+							<li>
+								<a href="/Admin/Shift/">Quản lý ca học</a>
+							</li>
+							<li>
+								<a href="/Admin/Category/">Quản lý chương trình học</a>
+							</li>
+							<li>
+								<a href="#">Quản lý môn học</a>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Danh bạ<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+								<a href="#">Quản lý danh bạ</a>
+							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+				}
+
+			}
+		</ul>
+	</div>
+	<!-- /.sidebar-collapse -->
+</div>
+<!-- /.navbar-static-side -->

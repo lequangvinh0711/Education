@@ -1,0 +1,157 @@
+﻿<div class="modal fade" id="ClassModel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header no-bd">
+                <h5 class="modal-title">
+                    <span class="fw-mediumbold">
+                        Lớp
+                    </span>
+                    <span class="fw-light">
+                        Học
+                    </span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="Add_Edit_Classes">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Mã lớp</label>
+                        <div class="col-sm-12">
+                            <input type="hidden" class="form-control" name="ID" id="txtID">
+                            <input type="text" class="form-control" name="CodeClass" id="txtCodeClass" placeholder="Nhập mã lớp">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Tên lớp</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" name="Name" id="txtName" placeholder="Nhập tên lớp">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Tên khóa học</label>
+                        <div class="col-sm-6">
+                            <select id="Coure" name="Coure" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Mô tả</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" name="Description" id="txtDescription" placeholder="Nhập mô tả">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Trạng thái</label>
+                        <div class="col-sm-6">
+                            <select name="Status" id="txtStatus" class="form-control">
+                                <option value="0">Đang hoạt động</option>
+                                <option value="1">Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Cấp độ</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" name="Level" id="txtLevel" placeholder="Nhập cấp độ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Số lượng học viên</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" name="QuantityOfStudents" id="txtQuantity" placeholder="Nhập số lượng">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Tổng số lượng</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" name="TotalLessons" id="txtTotalLessons" placeholder="Nhập số tổng">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary pull-right" onclick="Add_Edit()">Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script src="~/Content/AdminLTE3/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    function Add_Edit() {
+        debugger
+        var HTML = ``;
+        var data = $("#Add_Edit_Classes").serialize();
+        $.ajax({
+            url: "/Class/Save",
+            type: "post",
+            data: data,
+            success: function (result) {
+                $("#ClassModel").modal("hide");
+                HTML += `
+                    <div class ="alert alert-warning">
+                        <strong>Thành công!<strong> Lưu thành công.
+                    </div>
+                `;
+                location.reload();
+            }
+        });
+    };
+
+    function Show_Create_Edit(type,t) {
+        debugger
+        $("#ClassModel").modal("show");
+        if (type == 'Add')
+        {
+            $("#txtCodeClass").val("");
+            $("#txtName").val("");
+            $("#txtDescription").val("");
+            $("#txtStatus").val("");
+            $("#txtLevel").val("");
+            $("#txtQuantity").val("");
+            $("#txtTotalLessons").val("");
+            
+        }
+        else {
+            $.ajax({
+                url: "/Class/GetClassById?id=" + t,
+                type: "post",
+                dataType: "json",
+                success: function (item) {
+                    $("#txtCodeClass").val(item.CodeClass);
+                    $("#txtName").val(item.Name);
+                    $("#txtDescription").val(item.Description);
+                    $("#txtStatus").val(item.Status);
+                    $("#txtLevel").val(item.Level);
+                    $("#txtQuantity").val(item.QuantityOfStudents);
+                    $("#txtTotalLessons").val(item.TotalLessons);
+                    $("#txtID").val(t);
+                }
+            });
+        }
+
+    };
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Coure/GetCoure",
+            type: "POST",
+            datatype: "json",
+            success: function (data) {
+                if (data) {
+                    debugger
+                    var select = $("#Coure");
+                    select.find('option').remove();
+                    $.each(data.data, function (index, value) {
+                        select.append('<option value=' + value.ID + '>' + value.Name + '</option>'); // return empty
+                    });
+                }
+            }
+        });
+    });
+</script>

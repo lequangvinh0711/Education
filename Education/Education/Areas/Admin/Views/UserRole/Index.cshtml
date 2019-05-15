@@ -1,0 +1,146 @@
+﻿@using Education.Models;
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutLTE.cshtml";
+	var list = ViewBag.Permision as Permision_Detail;
+}
+
+<div class="page-inner" ng-controller="UserRoleController">
+	<div class="page-header">
+		<ul class="breadcrumbs">
+			<li class="nav-home">
+				<a href="#">
+					<i class="flaticon-home"></i>
+				</a>
+			</li>
+			<li class="separator">
+				<i class="flaticon-right-arrow"></i>
+			</li>
+			<li class="nav-item">
+				<a href="#">Cấu hình hệ thống</a>
+			</li>
+			<li class="separator">
+				<i class="flaticon-right-arrow"></i>
+			</li>
+			<li class="nav-item">
+				<a href="#">Quản lý tài khoản</a>
+			</li>
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="d-flex align-items-center">
+						@{
+							if (list.Add == true)
+							{
+								<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" onclick="Show_Create_Edit('Add',0)" data-target="#addRowModal">
+									<i class="fa fa-plus"></i>
+									Thêm
+								</button>
+							}
+						}
+					</div>
+				</div>
+				<div class="card-body">
+					<!-- Modal -->
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered table-hover" id="dataTable-example">
+							<thead>
+								<tr>
+									<th>Tên quyền</th>
+									<th>Mô tả</th>
+									<th></th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@RenderPage("Model.cshtml")
+@RenderPage("Delete.cshtml")
+@section Myscripts{
+	<script>
+		$(document).ready(function Load_danhsach() {
+			$("#dataTable-example").DataTable({
+				ajax: {
+					url: "/UserRole/GetList",
+					type: "Post",
+					datatype: "json"
+				},
+				columns: [
+					{ data: "Name", autowidth: true },
+					{ data: "Description", autowidth: true },
+					{
+						data: "ID", autowidth: true, render: function (data) {
+							return `
+								 <div class ="col-xs-9 ">
+                                     <div class ="col-xs-4 ">
+								@{
+									if (list.Add == true)
+									{
+										 <a href="#" onclick="Show_Create_Edit('Edit',${data})">
+											<button type="button" data-toggle="tooltip" title="" class ="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
+												<i class ="fa fa-edit"></i>
+											</button>
+                                         </a>
+									}
+									 @*<a href="#" onclick="Show_Create_Edit('Edit',${data})">
+											<div class ="btn btn-sm btn-warning">
+												<li class ="glyphicon glyphicon-edit"></li>
+											</div>
+                                         </a>*@
+									}
+
+											<a href="#" onclick="ShowDelete(${data})">
+												<button type="button" data-toggle="tooltip" title="" class ="btn btn-link btn-danger" data-original-title="Remove">
+												<i class ="fa fa-times"></i>
+											</button>
+											</a>
+                                     </div>
+								</div>
+								`;
+						}
+					}
+				],
+				'paging': true,
+				'lengthChange': true,
+				'searching': true,
+				'ordering': true,
+				'info': false,
+				'responsive': true,
+				"scrollY": 300,
+			});
+		});
+
+		function ShowCreate(type, id) {
+			$("#Modal1").modal("show");
+		};
+
+		//function ShowEdit(t) {
+		//	$("#Modal1").modal("show");
+		//	if(t!= 0)
+		//	{
+		//		$.ajax({
+		//			url: "/TaiKhoan/GetUsersById?id=" + t,
+		//			type: "GET",
+		//			datatype: "JSON",
+		//			success: function (value) {
+		//				var obj = JSON.parse(value);
+		//				$("#txtUsername").val(obj.Name);
+		//				$("#txtPassword").val(obj.Name);
+		//				$("#txtEmail").val(obj.Name);
+		//			}
+		//		});
+		//	}
+
+		//};
+
+
+
+	</script>
+}

@@ -1,0 +1,174 @@
+﻿
+<div class="modal fade" id="ModalView">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="width:980px;">
+			<div class="modal-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-header">
+									THÔNG TIN
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="card" style="width: 100%;">
+												<img class="card-img-top myClass"
+													 src=""
+													 alt="Card image cap">
+												<div class="card-body text-center">
+													<h5 class="card-title">Nguyễn Văn A</h5>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-9">
+											<ul class="nav nav-tabs" role="tablist">
+												<li class="nav-item">
+													<a class="nav-link active" href="#profile" role="tab" data-toggle="tab">THÔNG TIN CƠ BẢN</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" href="#buzz" role="tab" data-toggle="tab">THÔNG TIN THÊM</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" href="#references" role="tab" data-toggle="tab">references</a>
+												</li>
+											</ul>
+
+											<!-- Tab panes -->
+											<div class="tab-content">
+												<div role="tabpanel" class="tab-pane fade in active" id="profile">
+													<div class="col">
+														<table class="table">
+															<tbody>
+																<tr>
+																	<td>Họ và tên</td>
+																	<td><p id="Name"></p></td>
+																</tr>
+																<tr>
+																	<td>Giới tính</td>
+																	<td ><p id="Gender"></p></td>
+																<tr>
+																	<td>Địa chỉ</td>
+																	<td ><p id="Address"></p></td>
+																</tr>
+																<tr>
+																	<td>Số điện thoại</td>
+																	<td ><p id="Phone"></p></td>
+																</tr>
+																<tr>
+																	<td>Email</td>
+																	<td ><p id="Email"></p></td>
+																</tr>
+																<tr>
+																	<td>Trạng thái</td>
+																	<td ><p id="Status"></p></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+												<div role="tabpanel" class="tab-pane fade" id="buzz">
+													<div class="col">
+														<table class="table">
+															<tbody>
+																<tr>
+																	<td>Chứng minh nhân dân</td>
+																	<td colspan="2">Larry the Bird</td>
+																</tr>
+																<tr>
+																	<td>Ngày sinh</td>
+																	<td colspan="2">Larry the Bird</td>
+																</tr>
+																<tr>
+																	<td>Nơi sinh</td>
+																	<td colspan="2">Larry the Bird</td>
+																</tr>
+
+																<tr>
+																	<td>Địa chỉ thường trú</td>
+																	<td colspan="2">Larry the Bird</td>
+																</tr>
+																<tr>
+																	<td>Trình độ học vấn</td>
+																	<td colspan="2">Larry the Bird</td>
+																</tr>
+
+																<tr>
+																	<td>Nơi công tác</td>
+																	<td colspan="2">Larry the Bird</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+												<div role="tabpanel" class="tab-pane fade" id="references">ccc</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+
+
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script>
+	//function Add_Edit() {
+	//	debugger
+	//	//var ID = $("#txtID").val();
+	//	//var Username = $("#txtUsername").val();
+	//	//var Password = $("#txtPassword").val();
+	//	//var Email = $("#txtEmail").val();
+	//	var HTML = ``;
+	//	var data = $("#Add_Edit_Users").serialize();
+	//	$.ajax({
+	//		url: "/TaiKhoan/Save",
+	//		type: "post",
+	//		data: data,
+	//		success: function (result) {
+	//			//window.location.href = "/Admin/TaiKhoan/Index";
+	//			$("#Modal1").modal("hide");
+	//			HTML += `
+	//					<div class ="alert alert-warning">
+	//						<strong>Thành công!</strong> Lưu thành công.
+	//					</div>
+	//				`;
+	//			location.reload();
+	//		}
+	//	});
+	//};
+
+	function Show_View(t) {
+		debugger
+		$("#ModalView").modal("show");
+		$.ajax({
+			url: "/Teacher/GetTeacherById?id=" + t,
+			type: "post",
+			dataType: "json",
+			success: function (lst) {
+				$("p#Name").text(lst.Name);
+				$("p#Gender").text(lst.Gender);
+				$("p#Address").text(lst.Address);
+				$("p#Phone").text(lst.Phone);
+				$("p#Email").text(lst.Email);
+				$("p#Status").text(lst.Status);
+				$('.myClass').attr('src', '').promise().done(function () {
+					$(this).attr('src', lst.Img);
+				});
+			}
+		});
+	};
+
+</script>
+

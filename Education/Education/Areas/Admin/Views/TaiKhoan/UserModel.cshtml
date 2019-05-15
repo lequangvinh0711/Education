@@ -1,0 +1,120 @@
+﻿<div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header no-bd">
+				<h5 class="modal-title">
+					<span class="fw-mediumbold">
+						Tài
+					</span>
+					<span class="fw-light">
+						Khoản
+					</span>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="Add_Edit_Users">
+					@*<div class="form-group">
+							<label for="inputEmail3" class="col-sm-3 control-label"></label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control hidden" name="ID" id="txtID">
+							</div>
+						</div>
+						<br />*@
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-3 control-label">Tên đăng nhập</label>
+						<div class="col-sm-12">
+							<input type="hidden" class="form-control" name="ID" id="txtID">
+							<input type="text" class="form-control" name="Username" id="txtUsername" placeholder="Nhập tên đăng nhập">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword3" class="col-sm-3 control-label">Mật khẩu</label>
+						<div class="col-sm-12">
+							<input type="text" class="form-control" name="Password" id="txtPassword" placeholder="Nhập mật khẩu">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword3" class="col-sm-3 control-label">Email</label>
+						<div class="col-sm-12">
+							<input type="text" class="form-control" name="Email" id="txtEmail" placeholder="Nhập Email">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword3" class="col-sm-3 control-label">Vai trò</label>
+						<div class="col-sm-12">
+							<select name="IDRole" class="form-control">
+								<option value="0">----- Vai trò ----</option>
+								<option value="1">Quản trị viên</option>
+								<option value="2">Quản lý</option>
+								<option value="3">Giáo viên</option>
+								<option value="4">Nhân viên</option>
+							</select>
+						</div>
+
+					</div>
+					<div class="clearfix"></div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary pull-right" onclick="Add_Edit()">Lưu</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+<script>
+	function Add_Edit() {
+		debugger
+		//var ID = $("#txtID").val();
+		//var Username = $("#txtUsername").val();
+		//var Password = $("#txtPassword").val();
+		//var Email = $("#txtEmail").val();
+		var HTML = ``;
+		var data = $("#Add_Edit_Users").serialize();
+		$.ajax({
+			url: "/TaiKhoan/Save",
+			type: "post",
+			data: data,
+			success: function (result) {
+				//window.location.href = "/Admin/TaiKhoan/Index";
+				$("#Modal1").modal("hide");
+				HTML += `
+						<div class ="alert alert-warning">
+							<strong>Thành công!</strong> Lưu thành công.
+						</div>
+					`;
+				location.reload();
+			}
+		});
+	};
+
+	function Show_Create_Edit(type, t) {
+		debugger
+		$("#addRowModal").modal("show");
+		if (type == 'Add') {
+			$("#txtUsername").val("");
+			$("#txtPassword").val("");
+			$("#txtEmail").val("");
+		}
+		else {
+			$.ajax({
+				url: "/TaiKhoan/GetUsersById?id=" + t,
+				type: "post",
+				dataType: "json",
+				success: function (item) {
+					$("#txtUsername").val(item.Username);
+					$("#txtPassword").val(item.Password);
+					$("#txtEmail").val(item.Email);
+					$("#txtID").val(t);
+				}
+			});
+		}
+
+	};
+
+</script>
+

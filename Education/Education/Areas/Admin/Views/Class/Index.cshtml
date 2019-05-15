@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutLTE.cshtml";
+}
+
+<div class="page-inner">
+    <div class="page-header">
+        <ul class="breadcrumbs">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="flaticon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Trung tâm</a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Quản lý lớp học</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title"></h4>
+                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#ClassModel">
+                            <i class="fa fa-plus"></i>
+                            Thêm
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Modal -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTable-class">
+                            <thead>
+                                <tr>
+                                    <th>Mã lớp</th>
+                                    <th>Tên lớp học</th>
+                                    @*<th>Mô tả</th>*@
+                                    <th>Trạng thái</th>
+                                    <th>Cấp độ</th>
+                                    <th>Số lượng học viên</th>
+                                    @*<th>Tổng số</th>*@
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@RenderPage("ClassModel.cshtml")
+@RenderPage("Delete.cshtml")
+@section Myscripts{
+    <script>
+        $(document).ready(function Load_danhsach () {
+            $("#dataTable-class").DataTable({
+                ajax: {
+                    url: "/Class/GetClass",
+                    type: "Post",
+                    datatype: "json"
+                },
+                columns: [
+                    { data: "CodeClass", autowidth: true },
+					{ data: "Name", autowidth: true },
+					//{ data: "Description", autowidth: true },
+					{
+					     data: "Status", autowidth: true,
+					     render: function (data)
+					     {
+					         return data == 1 ? "Ngừng hoạt động" : "Đang hoạt động";
+					     }
+					},
+                    { data: "Level", autowidth: true },
+                    { data: "QuantityOfStudents", autowidth: true },
+                    //{ data: "TotalLessons", autowidth: true ,},
+					{
+					    data: "ID", autowidth: true, render: function (data)
+					    {
+					        return `
+					        <div class ="col-xs-9 form-button-action ">
+                                <div class ="col-xs-4 ">
+                                    <a href="#" onclick="Show_Create_Edit('Edit',${data})">
+                                       <button type="button" data-toggle="tooltip" title="" class ="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
+                                            <i class ="fa fa-edit"></i>
+                                       </button>
+                                    </a>
+                                </div>
+                                <div class ="col-xs-4 ">
+                                       <a href="#" onclick="ShowDelete(${data})">
+                                            <button type="button" data-toggle="tooltip" title="" class ="btn btn-link btn-danger" data-original-title="Remove">
+                                                <i class ="fa fa-times"></i>
+                                            </button>
+                                       </a>
+                                </div>
+                           </div>
+                                `;
+					    }
+					}
+                ],
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': false,
+                'responsive': true,
+                "scrollY": 300,
+            });
+        });
+
+        function ShowCreate(type, id) {
+            debugger
+            $("#ClassModel").modal("show");
+        };
+
+    </script>
+}
+
